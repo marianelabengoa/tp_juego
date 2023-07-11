@@ -9,7 +9,7 @@ from score_alto import get_Highgest_Score
 
 
 class nivel_1():
-    def __init__(self, pantalla, ALTO, ANCHO, FPS, size_capybara, score, plataforma_size, juego):
+    def __init__(self, pantalla, ALTO, ANCHO, FPS, size_capybara, plataforma_size, juego):
 
         pygame.init()
         pygame.mixer.init()
@@ -62,7 +62,7 @@ class nivel_1():
         self.F2 = Objeto((40, 40), (70, 320), "./assets/imagen/coin/F2.jpg")
         self.F3 = Objeto((40, 40), (70, 400), "./assets/imagen/coin/F3.png")
         self.F4 = Objeto((40, 40), (70, 480), "./assets/imagen/coin/F3.png")
-        self.space = Objeto((160, 40), (700, 200),
+        self.space = Objeto((190, 40), (700, 220),
                             "./assets/imagen/coin/space.png")
         self.flechas = Objeto((90, 70), (690, 400),
                               "./assets/imagen/coin/flechas.png")
@@ -131,6 +131,8 @@ class nivel_1():
 
         self.clock = pygame.time.Clock()
         pygame.time.set_timer(pygame.USEREVENT, 1000)
+
+        score=0
 
         try:
             self.score_mas_alto = int(get_Highgest_Score())
@@ -319,7 +321,7 @@ class nivel_1():
                 self.juego.game_over()
 
             if self.capi.rect.colliderect(self.portal.rect):
-                self.juego.ganar()
+                self.juego.ganar(score, self.score_mas_alto)
 
             pygame.display.flip()
 

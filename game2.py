@@ -121,15 +121,15 @@ class Game:
                     if evento.key == pygame.K_1 or evento.key == pygame.K_KP_1:
                         self.musica_parar()
                         nivel_1((ANCHO, ALTO), ALTO, ANCHO, self.FPS,
-                                self.tamaño_cap, self.score, self.plataforma_size, self)
+                                self.tamaño_cap, self.plataforma_size, self)
                     elif evento.key == pygame.K_2 or evento.key == pygame.K_KP_2:
                         self.musica_parar()
                         nivel_2((ANCHO, ALTO), ALTO, ANCHO, self.FPS,
-                                self.tamaño_cap, self.score, self.plataforma_size, self)
+                                self.tamaño_cap, self.plataforma_size, self)
                     elif evento.key == pygame.K_3 or evento.key == pygame.K_KP_3:
                         self.musica_parar()
                         nivel_3((ANCHO, ALTO), ALTO, ANCHO, self.FPS,
-                                self.tamaño_cap, self.score, self.plataforma_size, self)
+                                self.tamaño_cap, self.plataforma_size, self)
                     elif evento.key == pygame.K_b:
                         self.pantalla_inicio()
                         self.manejar_eventos_inicio()
@@ -186,11 +186,12 @@ class Game:
                     self.salir()
 
                 if evento.type == pygame.KEYDOWN:
-                    if evento.key == pygame.K_LEFT or evento.key == pygame.K_UP or evento.key == pygame.K_RIGHT:
+                    if not evento.key == pygame.K_RIGHT:
+                    # if evento.key == pygame.K_LEFT or evento.key == pygame.K_UP or evento.key == pygame.K_DOWN:
                         self.comenzar_app()
                 pygame.display.flip()
 
-    def ganar(self):
+    def ganar(self, score, score_mas_alto):
         while True:
             self.display.fill(self.NEGRO)
             self.display.blit(self.fuente_titulo.render(
@@ -201,12 +202,12 @@ class Game:
 
             if self.score > self.score_mas_alto:
                 self.display.blit(self.fuente_letra.render(
-                    f"registraste el score mas alto, con una puntuacion de {self.score}", True, self.VERDE), (50, 100))
+                    f"registraste el score mas alto, con una puntuacion de {score}", True, self.VERDE), (50, 100))
             else:
                 self.display.blit(self.fuente_letra.render(
-                    f"score mas alto {self.score_mas_alto}", True, self.VERDE), (50, 100))
+                    f"score mas alto {score_mas_alto}", True, self.VERDE), (50, 100))
                 self.display.blit(self.fuente_letra.render(
-                    f"tu score {self.score}", True, self.VERDE), (50, 150))
+                    f"tu score {score}", True, self.VERDE), (50, 150))
 
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:

@@ -375,7 +375,7 @@ from cantidad import Corazon
 from score_alto import get_Highgest_Score
 
 class nivel_2:
-    def __init__(self, pantalla, ALTO, ANCHO, FPS, size_capybara, score, plataforma_size, JUEGO):
+    def __init__(self, pantalla, ALTO, ANCHO, FPS, size_capybara, plataforma_size, JUEGO):
 
         pygame.init()
         pygame.mixer.init()
@@ -431,7 +431,7 @@ class nivel_2:
         self.F2 = Objeto((40, 40), (70, 320), "./assets/imagen/coin/F2.jpg")
         self.F3 = Objeto((40, 40), (70, 400), "./assets/imagen/coin/F3.png")
         self.F4 = Objeto((40, 40), (70, 480), "./assets/imagen/coin/F3.png")
-        self.space = Objeto((150, 30), (700, 200),
+        self.space = Objeto((190, 40), (700, 220),
                             "./assets/imagen/coin/space.png")
         self.flechas = Objeto((90, 70), (690, 400),
                               "./assets/imagen/coin/flechas.png")
@@ -516,6 +516,8 @@ class nivel_2:
 
         self.clock = pygame.time.Clock()
         pygame.time.set_timer(pygame.USEREVENT, 1000)
+
+        self.score=0
 
         try:
             self.score_mas_alto = int(get_Highgest_Score())
@@ -638,9 +640,9 @@ class nivel_2:
             self.capi.chocar(self.plat4.rect)
             self.capi.update()
 
-            if score > self.score_mas_alto:
-                self.score_mas_alto = score
-            with open("score_mas_alto.txt", "w") as file:
+            if self.score > self.score_mas_alto:
+                self.score_mas_alto = self.self.score
+            with open("self.score_mas_alto.txt", "w") as file:
                 file.write(str(self.score_mas_alto))
 
             self.segundos = pygame.time.get_ticks() // 1000
@@ -651,13 +653,13 @@ class nivel_2:
             if pygame.sprite.spritecollide(self.capi, self.lasers_enemigos, True) or pygame.sprite.spritecollideany(self.capi, self.enemigos):
                 self.contador_vidas -= 1
                 self.corazon.sacar()
-                if score > 0:
-                    score -= 100
+                if self.score > 0:
+                    self.score -= 100
                 else:
-                    score = 0
+                    self.score = 0
 
             if pygame.sprite.spritecollide(self.capi, self.coins, True):
-                score += 500
+                self.score += 500
                 self.coin_sonido.play()
 
             if pygame.sprite.spritecollide(self.capi, self.corazones, True):
@@ -666,7 +668,7 @@ class nivel_2:
                     self.contador_vidas += 1
                 else:
                     self.contador_vidas = 3
-                    score += 1000
+                    self.score += 1000
 
             pygame.sprite.groupcollide(self.enemigos, self.lasers, True, True)
 
@@ -676,7 +678,7 @@ class nivel_2:
                     self.lasers_enemigos.remove(laser_enemigo)
 
             if pygame.sprite.spritecollide(self.enemy2, self.lasers, True):
-                score += 500
+                self.score += 500
 
             pygame.sprite.groupcollide(
                 self.lasers_enemigos, self.plataformas, True, False)
@@ -717,7 +719,7 @@ class nivel_2:
             self.display.blit(self.corazon.imagen, self.corazon.rect)
 
             self.display.blit(self.fuente.render(
-                "Score " + str(score), True, self.BLANCO), (50, 50))
+                "Score " + str(self.score), True, self.BLANCO), (50, 50))
             self.display.blit(self.fuente.render(
                 "Time left " + self.text_cont, True, self.BLANCO), (200, 48))
 
@@ -727,6 +729,6 @@ class nivel_2:
                 self.juego.game_over()
 
             if self.capi.rect.colliderect(self.portal.rect):
-                self.juego.ganar()
+                self.juego.ganar(self.score, self.score_mas_alto)
 
             pygame.display.update()
